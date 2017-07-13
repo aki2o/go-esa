@@ -31,6 +31,13 @@ type Post struct {
 	Name     string   `json:"name"`
 	Tags     []string `json:"tags"`
 	Wip      bool     `json:"wip"`
+	OriginalRevision PostOriginalRevision `json:"original_revision"`
+}
+
+type PostOriginalRevision struct {
+	BodyMd  string  `json:"body_md"`
+	Number	int		`json:"number"`
+	User	string	`json:"user"`
 }
 
 // PostResponse 記事のレスポンス
