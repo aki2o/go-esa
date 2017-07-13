@@ -29,16 +29,33 @@ type MembersResponse struct {
 }
 
 // GetTeamMembers チ-ム名を指定してメンバー情報を取得する
-func (s *MembersService) Get(teamName string) (*MembersResponse, error) {
-	var membersRes MembersResponse
+func (s *MembersService) Get(teamName string) ([]Member, error) {
+	membersURL	:= MembersURL+ "/" + teamName + "/members"
+	members		:= []Member{}
+	page		:= "1"
 
-	membersURL := MembersURL+ "/" + teamName + "/members"
-	res, err := s.client.get(membersURL, url.Values{}, &membersRes)
-	if err != nil {
-		return nil, err
+	for {
+		query := url.Values{}
+
+		query.Add("page", page)
+		query.Add("per_page", "100")
+
+		var membersRes MembersResponse
+
+		res, err := s.client.get(membersURL, query, &membersRes)
+		if err != nil {
+			return members, err
+		}
+		res.Body.Close()
+
+		members = append(members, membersRes.Members...)
+
+		if next_page, ok := membersRes.NextPage.(string); ok {
+			page = next_page
+		} else {
+			break
+		}
 	}
 
-	defer res.Body.Close()
-
-	return &membersRes, nil
+	return members, nil
 }
