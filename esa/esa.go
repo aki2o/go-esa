@@ -16,15 +16,16 @@ const (
 
 // Client esa API クライアント
 type Client struct {
-	Client  *http.Client
-	apiKey  string
-	baseURL string
-	Team    *TeamService
-	Stats   *StatsService
-	Post    *PostService
-	Comment *CommentService
-	Members *MembersService
-	User    *UserService
+	Client   *http.Client
+	apiKey   string
+	baseURL  string
+	Team     *TeamService
+	Stats    *StatsService
+	Post     *PostService
+	Comment  *CommentService
+	Members  *MembersService
+	Category *CategoryService
+	User     *UserService
 }
 
 // NewClient esa APIのClientを生成する
@@ -38,6 +39,7 @@ func NewClient(apikey string) *Client {
 	c.Post = &PostService{client: c}
 	c.Comment = &CommentService{client: c}
 	c.Members = &MembersService{client: c}
+	c.Category = &CategoryService{client: c}
 	c.User = &UserService{client: c}
 
 	return c
