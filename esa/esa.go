@@ -57,7 +57,7 @@ func (c *Client) post(esaURL string, bodyType string, body io.Reader, v interfac
 
 	defer res.Body.Close()
 
-	if res.StatusCode != http.StatusCreated {
+	if res.StatusCode != http.StatusCreated && res.StatusCode != http.StatusOK {
 		return nil, errors.New(http.StatusText(res.StatusCode))
 	}
 
